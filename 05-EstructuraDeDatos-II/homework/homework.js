@@ -22,35 +22,40 @@ function Node(value) {
 
 LinkedList.prototype.add = function (data) {
   let node = new Node(data)
-  let current = this.head;
-  if (!current) {
+  let curr = this.head;
+  if (!curr) {
     this.head = node;
     return node;
   }
-  while (current.next) {
-    current = current.next;
-  }
-  current.next = node;
+  while (curr.next) curr = curr.next
+  curr.next = node;
   return node;
 }
 
 LinkedList.prototype.remove = function () {
-  let current = this.head;
-  if (current === null) return null;
-  if (current.next === null) {
-    current.head = null;
-    return current.value
+  let curr = this.head;
+  if (!curr) return null;
+  if (!curr.next) {
+    this.head = null;
+    return curr.value
   }
-  let last = current.next;
-  while (current.next != null) {
-    last = current;
-    current = current.next;
-  }
-  last.next = null;
-  return current.value;
+  while (curr.next.next) curr = curr.next
+  let last = curr.next.value
+  curr.next = null;
+  return last
 }
 LinkedList.prototype.search = function (data) {
-  // if (this.head == null) return undefined;
+  let curr = this.head;
+  if (!curr) return null;
+  if (curr.value == data) return data;
+  while (curr != null) {
+    if (curr.value == data) return curr.value;
+    if (typeof data === 'function' && data(curr.value)) {
+      return curr.value;
+    }
+    curr = curr.next;
+  }
+  return null;
 }
 
 /*
@@ -68,7 +73,9 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+  
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------

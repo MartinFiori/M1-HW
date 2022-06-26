@@ -1,5 +1,9 @@
 'use strict'
 
+const {
+  listenerCount
+} = require("@11ty/eleventy/src/Util/AsyncEventEmitter");
+
 /*
 Definir las funciones recursivas nFactorial y nFibonacci.
 
@@ -15,13 +19,13 @@ Como ejercicio adicional y completamente opcional, al terminar de resolver este 
 */
 
 function nFactorial(n) {
-  if (n == 0) return
+  if (n == 0) return;
   if (n <= 1) return 1;
   return n * nFactorial(n - 1)
 }
 
 function nFibonacci(n) {
-  if (!Number.isInteger(n)) throw new Error('nono papi')
+  // if (!Number.isInteger(n)) throw new Error('nono papi')
   if (n < 2) return n;
   return nFibonacci(n - 2) + nFibonacci(n - 1)
 }
@@ -40,10 +44,10 @@ function Queue() {
     return this.total.length;
   }
   const enqueue = (value) => {
-    return this.total.unshift(value);
+    return this.total.push(value);
   }
   const dequeue = () => {
-    return this.total.pop()
+    return this.total.shift()
   }
   return {
     size,
@@ -51,6 +55,10 @@ function Queue() {
     dequeue
   }
 }
+
+
+
+
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------

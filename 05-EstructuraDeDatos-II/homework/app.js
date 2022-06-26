@@ -3,74 +3,69 @@ function LinkedList() {
     this.head = null;
 }
 
-function Node(value) {
-    this.value = value;
-    this.next = null;
+function UserNode(name, email, city) {
+    this.name = name;
+    this.email = email;
+    this.city = city;
 }
 
 LinkedList.prototype.add = function (data) {
-    let node = new Node(data)
-    let current = this.head;
-    if (!current) {
+    let node = new UserNode(data)
+    let curr = this.head;
+    if (!curr) {
         this.head = node;
-        this._length++;
         return node;
     }
-    while (current.next) {
-        current = current.next;
-    }
-    current.next = node;
-    this._length++;
+    while (curr.next) curr = curr.next;
+    curr.next = node;
     return node;
 }
 
 LinkedList.prototype.remove = function () {
-    this._length--;
-    let current = this.head;
-    let found;
-    if (current === null) return null;
-    if (current.next === null) {
-        current.head = null;
-        return current.value
+    let curr = this.head;
+    if (!curr) return null;
+    if (!curr.next) {
+        this.head = null;
+        return curr.value
     }
-    while (current.next != null) {
-        if (current.next.next == null) {
-            found = current.next;
-            current.next = null;
-        } else {
-            current = current.next;
-        }
-    }
-    return found;
+    while (curr.next.next) curr = curr.next
+    let last = curr.next.value
+    curr.next = null;
+    return last
 }
+
 LinkedList.prototype.search = function (data) {
-    // if (this.head == null) return undefined;
+    let curr = this.head;
+    if (!curr) return null;
+    if (curr.value == data) return data;
+    while (curr != null) {
+        if (curr.value == data) return curr.value;
+        if (typeof data === 'function' && data(curr.value)) {
+            return curr.value;
+        }
+        curr = curr.next;
+    }
+    return null;
 }
 
 
 let list1 = new LinkedList();
 
-// list1.add('fede')
-// list1.add('franco')
-// list1.add('wada')
-// list1.add('mati')
-// list1.add('carlos')
-// list1.add('rosana')
-// console.log(list1.remove())
-// console.log(list1.remove())
-// arr.pop
-// console.log(list1.head.next.next.next.next)
 
-var removeDuplicates = function (nums) {
-    return nums.filter((el,index)=> nums.indexOf(el) === index)
-};
+list1.add(new UserNode('Nimit', 'nimit@fs.com', 'New York'));
+list1.add(new UserNode('David', 'david@fs.com', 'New York'));
+list1.add(new UserNode('Paul', 'paul@yc.com', 'Mountain View'));
+console.log(list1.head)
+// console.log(list1.search(function (userNode) {
+//     return userNode.name === 'Nimit';
+// }))
 
-var removeDuplicates2 = function (nums) {
-    return nums.reduce((acc,el)=>{
-        if(!acc.includes(el)) acc.push(el);
+function removeDuplicates(nums) {
+    return nums.reduce((acc, el) => {
+        if (!acc.includes(el)) acc.push(el);
         return acc;
-    },[])
+    }, []);
 };
 
 // console.log(removeDuplicates([1, 1, 2]))
-console.log(removeDuplicates2([1, 1, 2]))
+// console.log(removeDuplicates2([1, 1, 2]))
