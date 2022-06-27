@@ -37,18 +37,18 @@ LinkedList.prototype.remove = function () {
   if (!curr) return null;
   if (!curr.next) {
     this.head = null;
-    return curr.value
+    return curr.value;
   }
-  while (curr.next.next) curr = curr.next
-  let last = curr.next.value
+  while (curr.next.next) curr = curr.next;
+  let last = curr.next.value;
   curr.next = null;
-  return last
+  return last;
 }
 LinkedList.prototype.search = function (data) {
   let curr = this.head;
   if (!curr) return null;
   if (curr.value == data) return data;
-  while (curr != null) {
+  while (curr) {
     if (curr.value == data) return curr.value;
     if (typeof data === 'function' && data(curr.value)) {
       return curr.value;
@@ -74,7 +74,44 @@ Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero
 */
 
 function HashTable() {
-  
+  this.numBuckets = 35;
+  this.storage = [];
+}
+
+HashTable.prototype.hash = function (str) {
+  let charStr = 0;
+  for (let i = 0; i < str.length; i++) {
+    charStr += str.charCodeAt(i);
+  }
+  return charStr % this.numBuckets;
+}
+
+HashTable.prototype.set = function (key, value) {
+  if (typeof key != 'string') throw TypeError('tirame un string bro')
+  let index = this.hash(key);
+  this.storage[index] = this.storage[index] ? this.storage[index] : [];
+  this.storage[index].push({
+    key: key,
+    value: value
+  });
+}
+
+HashTable.prototype.get = function (key) {
+  let index = this.hash(key);
+  let found = this.storage[index].map(el => {
+    if (el.key === key) return el
+  });
+  return found[0].value;
+}
+
+HashTable.prototype.hasKey = function (key) {
+  let index = this.hash(key);
+  let arr = this.storage[index];
+  let found = false;
+  for (const entry of arr) {
+      if(entry.key === key) found = true
+  }
+  return found;
 }
 
 // No modifiquen nada debajo de esta linea
